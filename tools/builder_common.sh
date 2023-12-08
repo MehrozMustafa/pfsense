@@ -271,7 +271,9 @@ make_world() {
 		|| print_error_pfS
 
 	# Use the builder cross compiler from obj to produce the final binary.
-	# I COMMENTED THIS LINE BELOW BECAUSE I HAVE A DIFFERENT PATH FOR /cc file
+	## I COMMENTED THIS LINE BELOW BECAUSE I HAVE A DIFFERENT PATH FOR /cc file
+ 	## I think a symbolic link can also do the trick here, or run the line below ig,
+  	# ln -s /usr/bin/cc /root/pfsense/tmp/obj/root/pfsense/tmp/FreeBSD-src/amd64.amd64/tmp/usr/bin/cc
  	# BUILD_CC="${MAKEOBJDIRPREFIX}${FREEBSD_SRC_DIR}/${TARGET}.${TARGET_ARCH}/tmp/usr/bin/cc"
 	BUILD_CC="/usr/bin/cc"
 	[ -f "${BUILD_CC}" ] || print_error_pfS
