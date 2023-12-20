@@ -590,7 +590,7 @@ foreach ($a_filter as $filteri => $filterent):
 			$iconfn = "fa-solid fa-times text-danger";
 			$title_text = gettext("traffic is blocked");
 		} else if ($filterent['type'] == "reject") {
-			$iconfn = "fa-solid fa-hand text-warning";
+			$iconfn = "fa-regular fa-hand text-warning";
 			$title_text = gettext("traffic is rejected");
 		} else if ($filterent['type'] == "match") {
 			$iconfn = "fa-solid fa-filter";
@@ -1075,14 +1075,14 @@ $btncopyrules = new Form_Button(
 	'copyr',
 	'Paste',
 	null,
-	'fa-clone'
+	'fa-regular fa-clone'
 );
 $btncopyrules->setAttribute('type','button')->addClass('btn-success');
 $btncancelcopyrules = new Form_Button(
 	'cancel_copyr',
 	'Cancel',
 	null,
-	'fa-undo'
+	'fa-solid fa-undo'
 );
 $btncancelcopyrules->setAttribute('type','button')->addClass('btn-warning');
 $modal->addInput(new Form_StaticText(

@@ -903,6 +903,13 @@ function filter_generate_aliases() {
 				}
 			}
 		}
+		if (is_array($ifcfg_temp['vips6'])) {
+			foreach ($ifcfg_temp['vips6'] as $vip) {
+				if (!empty($vip['ip']) && !empty($vip['sn'])) {
+					$if_subnets[] = $vip['ip'] . '/' . $vip['sn'];
+				}
+			}
+		}
 		// pppoe
 		if (is_array($ifcfg_temp) && ($ifcfg_temp[0]['if'] == 'pppoe')) {
 			foreach ($ifcfg_temp as $pppoecfg) {
@@ -2005,7 +2012,7 @@ function filter_nat_rules_outbound_automatic($src) {
 		$natent['interface'] = $if;
 		$natent['source']['network'] = $src;
 		$natent['dstport'] = "500";
-		$natent['target'] = "";
+		$natent['target'] = "{$if}ip";
 		$natent['destination']['any'] = true;
 		$natent['staticnatport'] = true;
 		$natent['descr'] = gettext('Auto created rule for ISAKMP');
@@ -2015,7 +2022,7 @@ function filter_nat_rules_outbound_automatic($src) {
 		$natent['interface'] = $if;
 		$natent['source']['network'] = $src;
 		$natent['sourceport'] = "";
-		$natent['target'] = "";
+		$natent['target'] = "{$if}ip";
 		$natent['destination']['any'] = true;
 		$natent['natport'] = "";
 		$natent['descr'] = gettext('Auto created rule');
@@ -2451,7 +2458,7 @@ function filter_nat_rules_generate() {
 
 			if (!$obent['interface'] || !isset($FilterIflist[$obent['interface']])) {
 				$error_text = sprintf(gettext("Missing interface '%1\$s' for rule '%2\$s'"), $obent['interface'], $descr);
-				$natrules .= "# {$error_text}";
+				$natrules .= "# {$error_text}\n";
 				continue;
 			}
 
@@ -2462,7 +2469,7 @@ function filter_nat_rules_generate() {
 				if (empty($src)) {
 					$error_text = sprintf(gettext("Unresolvable source alias '%1\$s' for rule '%2\$s'"), $src, $descr);
 					file_notice("Filter_Reload", $error_text);
-					$natrules .= "# {$error_text}";
+					$natrules .= "# {$error_text}\n";
 					continue;
 				}
 			}
@@ -2476,7 +2483,7 @@ function filter_nat_rules_generate() {
 				}
 				if ($error_text) {
 					file_notice("Filter_Reload", $error_text);
-					$natrules .= "# {$error_text}";
+					$natrules .= "# {$error_text}\n";
 					continue;
 				}
 			}
@@ -2488,7 +2495,7 @@ function filter_nat_rules_generate() {
 				if (empty($dst)) {
 					$error_text = sprintf(gettext("Unresolvable destination alias '%1\$s' for rule '%2\$s'"), $dst, $descr);
 					file_notice("Filter_Reload", $error_text);
-					$natrules .= "# {$error_text}";
+					$natrules .= "# {$error_text}\n";
 					continue;
 				}
 			}
@@ -2502,7 +2509,7 @@ function filter_nat_rules_generate() {
 				}
 				if ($error_text) {
 					file_notice("Filter_Reload", $error_text);
-					$natrules .= "# {$error_text}";
+					$natrules .= "# {$error_text}\n";
 					continue;
 				}
 			}
@@ -2531,7 +2538,7 @@ function filter_nat_rules_generate() {
 					$inet6 = true;
 				}
 				if ($inet4 && $inet6) {
-					$natrules .= "# conflicting ipv4/ipv6 settings in nat rule: {$descr}";
+					$natrules .= "# conflicting ipv4/ipv6 settings in nat rule: {$descr}\n";
 					continue;
 				} elseif ($inet4 || $inet6) {
 					$obent['ipprotocol'] = ($inet4) ? 'inet' : 'inet6';
